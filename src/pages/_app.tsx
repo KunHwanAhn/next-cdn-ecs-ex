@@ -5,7 +5,7 @@ import {
   QueryClient,
   QueryClientProvider,
   DehydratedState,
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import '@/styles/globals.scss';
 
