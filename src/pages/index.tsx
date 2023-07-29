@@ -1,7 +1,9 @@
 import React from 'react';
 import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+import {
+  dehydrate, DehydratedState, QueryClient, useQuery,
+} from '@tanstack/react-query';
 
 import { QUERY_KEY } from '@/constants/index';
 import { getTodos } from '@/services/index';
@@ -11,7 +13,8 @@ import TodoItem from '@/components/TodoItem';
 
 import style from './index.module.scss';
 
-export const getServerSideProps: GetServerSideProps = async () => {
+type TodoListSsrProps = { dehydratedState: DehydratedState; };
+export const getServerSideProps: GetServerSideProps<TodoListSsrProps> = async () => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
@@ -31,9 +34,10 @@ export default function TodoList() {
     isLoading: isTodoLoading,
     data: todoList,
   } = useQuery(
-    [QUERY_KEY.TODOS],
-    getTodos,
-    { staleTime: 60 * 1000 },
+    {
+      queryKey: [QUERY_KEY.TODOS],
+      queryFn: () => getTodos(),
+    },
   );
 
   return (
@@ -44,7 +48,7 @@ export default function TodoList() {
       {isTodoLoading && <div>loading...</div>}
       {!isTodoLoading && todoList && (
       <>
-        <div>{`TODO #${todoList.length}`}</div>
+        <h1 className={style['todo-list-title']}>{`TODO #${todoList.length}`}</h1>
         <TodoForm />
         <ul className={style['todo-list-container']}>
           {todoList.map((todoItem) => (
