@@ -1,0 +1,7 @@
+$mobile-break-point: 960px;
+
+@mixin desktop {
+  @media (min-width: calc(#{$mobile-break-point + 1px})) {
+    @content;
+  }
+}

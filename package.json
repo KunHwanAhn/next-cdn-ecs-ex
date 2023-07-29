@@ -1,0 +1,42 @@
+{
+  "name": "next-cdn-ecs-ex",
+  "version": "1.0.0",
+  "main": "src/pages/index.ts",
+  "repository": "git@github.com:KunHwanAhn/next-cdn-ecs-ex.git",
+  "author": "Conan Kunhwan Ahn <kunhwon@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "dev": "next dev | pino-pretty -t -c",
+    "build": "next build",
+    "start": "next start | pino-pretty -t -c",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "next": "^13.4.12",
+    "pino": "^8.14.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-query": "^3.39.3",
+    "sharp": "^0.32.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.5",
+    "@types/react": "^18.2.17",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
+    "eslint": "^8.46.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-next": "^13.4.12",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.33.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "pino-pretty": "^10.2.0",
+    "sass": "^1.64.1",
+    "typescript": "^5.1.6"
+  }
+}
