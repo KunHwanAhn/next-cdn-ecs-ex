@@ -1,0 +1,26 @@
+@import '~@/styles/mixins.scss';
+
+.todo-form {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border: 1px solid;
+  border-radius: var(--border-radius);
+
+  & > a {
+    flex-grow: 1;
+  }
+
+  & > button {
+    margin-inline-start: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  & + & {
+    margin-block-start: 0.5rem;
+  }
+
+  @include desktop {
+    font-size: 2rem;
+  }
+}

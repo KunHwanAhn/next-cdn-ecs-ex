@@ -1,6 +1,6 @@
 {
   "name": "next-cdn-ecs-ex",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "src/pages/index.ts",
   "repository": "git@github.com:KunHwanAhn/next-cdn-ecs-ex.git",
   "author": "Conan Kunhwan Ahn <kunhwon@gmail.com>",
@@ -13,12 +13,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.32.0",
     "axios": "^1.4.0",
     "next": "^13.4.12",
     "pino": "^8.14.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-query": "^3.39.3",
     "sharp": "^0.32.4"
   },
   "devDependencies": {

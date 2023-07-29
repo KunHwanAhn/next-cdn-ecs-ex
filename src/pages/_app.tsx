@@ -5,7 +5,7 @@ import {
   QueryClient,
   QueryClientProvider,
   DehydratedState,
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import '@/styles/globals.scss';
 
@@ -18,8 +18,15 @@ export type AppProps = {
   pageProps: CustomPageProps;
 } & Omit<NextAppProps, 'pageProps'>;
 
+const DEFAULT_STALE_TIME = 60 * 1000;
 export default function App({ Component, pageProps }: AppProps) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: DEFAULT_STALE_TIME,
+      },
+    },
+  }));
   const { dehydratedState, ...restPageProps } = pageProps;
 
   return (

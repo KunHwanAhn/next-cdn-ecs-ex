@@ -1,0 +1,15 @@
+$prefix: todo-list;
+
+.#{$prefix}-title {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-block-end: .5em;
+}
+
+.#{$prefix}-container {
+  margin-block-start: 1em;
+}
+
+:export {
+  prefix: $prefix;
+}
