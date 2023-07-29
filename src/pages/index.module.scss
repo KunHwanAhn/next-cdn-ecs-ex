@@ -1,11 +1,15 @@
-$todoList: 'todo-list';
+$prefix: todo-list;
 
-.#{$todoList}-title {
+.#{$prefix}-title {
   font-size: 2rem;
   font-weight: 500;
   margin-block-end: .5em;
 }
 
-.#{$todoList}-container {
+.#{$prefix}-container {
   margin-block-start: 1em;
+}
+
+:export {
+  prefix: $prefix;
 }

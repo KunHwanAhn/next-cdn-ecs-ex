@@ -13,6 +13,8 @@ import TodoItem from '@/components/TodoItem';
 
 import style from './index.module.scss';
 
+const PAGE_CSS_PREFIX = style.prefix;
+
 type TodoListSsrProps = { dehydratedState: DehydratedState; };
 export const getServerSideProps: GetServerSideProps<TodoListSsrProps> = async () => {
   const queryClient = new QueryClient();
@@ -48,9 +50,9 @@ export default function TodoList() {
       {isTodoLoading && <div>loading...</div>}
       {!isTodoLoading && todoList && (
       <>
-        <h1 className={style['todo-list-title']}>{`TODO #${todoList.length}`}</h1>
+        <h1 className={style[`${PAGE_CSS_PREFIX}-title`]}>{`TODO #${todoList.length}`}</h1>
         <TodoForm />
-        <ul className={style['todo-list-container']}>
+        <ul className={style[`${PAGE_CSS_PREFIX}-container`]}>
           {todoList.map((todoItem) => (
             <TodoItem
               key={todoItem.id}
