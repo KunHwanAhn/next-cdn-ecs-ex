@@ -1,4 +1,4 @@
-FROM --platform=amd64 endeveit/docker-jq AS deps
+FROM endeveit/docker-jq AS deps
 
 # https://stackoverflow.com/a/59606373
 # To prevent cache invalidation from changes in fields other than dependencies
@@ -6,7 +6,7 @@ COPY package.json /tmp
 
 RUN jq '{ dependencies, devDependencies }' < /tmp/package.json > /tmp/deps.json
 
-FROM --platform=amd64 node:16.20.1-alpine3.18
+FROM node:16.20.1-alpine3.18
 
 ENV PORT 80
 
