@@ -1,0 +1,38 @@
+name: build-image
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [develop, feature/**, hotfix/**, release/**]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+      - name: git clone
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - name: Cache node moudles
+        uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Build project
+        run: yarn build
