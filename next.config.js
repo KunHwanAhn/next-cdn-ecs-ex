@@ -19,6 +19,7 @@ const devConfig = {
 /** @type {import('next').NextConfig} */
 const prodConfig = {
   ...defaultConfig,
+  output: 'standalone',
   compiler: {
     removeConsole: {
       exclude: ['error'],
