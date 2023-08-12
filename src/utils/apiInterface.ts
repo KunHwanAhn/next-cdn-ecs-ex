@@ -3,7 +3,7 @@ import logger from '@/logger';
 
 const baseInstance = axios.create({ baseURL: process.env.NEXT_PUBLIC_API_BASE_URL });
 
-baseInstance.interceptors.response.use((response) => response.data, (error) => {
+baseInstance.interceptors.response.use(null, (error) => {
   logger.error({ error }, `error message: ${error.message}`);
 
   if (error.response) {
