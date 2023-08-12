@@ -6,7 +6,7 @@ ENV PORT 80
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# Copying source files
+# Copy build output files
 COPY ./public ./public
 COPY ./.next/standalone ./
 COPY ./.next/static ./.next/static
