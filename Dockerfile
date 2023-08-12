@@ -7,8 +7,8 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Copying source files
-COPY ./public .
-COPY ./.next/standalone .
+COPY ./public ./public
+COPY ./.next/standalone ./
 COPY ./.next/static ./.next/static
 
 EXPOSE $PORT
