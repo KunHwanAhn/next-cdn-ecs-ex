@@ -7,13 +7,11 @@ on:
     branches: [develop, feature/**, hotfix/**, release/**]
 
 jobs:
-  build:
+  build-nextjs:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
-
+        node-version: [18.x, 20.x]
     steps:
       - name: git clone
         uses: actions/checkout@v3
@@ -36,3 +34,62 @@ jobs:
 
       - name: Build project
         run: yarn build
+
+      - name: get-npm-version
+        # if: github.ref == 'refs/heads/main' && matrix.node-version == '18.x'
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+
+      - name: Upload built result
+        # if: github.ref == 'refs/heads/main' && matrix.node-version == '18.x'
+        uses: actions/upload-artifact@v3
+        with:
+          name: next-built-$GITHUB_SHA
+          retention-days: 5
+          path: |
+            .next/*
+            public/*
+
+  build-docker:
+    # if: github.ref == 'refs/heads/main'
+    needs: [build-nextjs]
+    runs-on: ubuntu-latest
+    steps:
+      - name: git clone
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+
+      - name: Download built result
+        uses: actions/download-artifact@v3
+        with:
+          name: next-built-$GITHUB_SHA
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          mask-password: 'true'
+
+      - name: Build and push docker image to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ steps.package-version.outputs.current-version}}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
