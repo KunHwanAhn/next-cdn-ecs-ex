@@ -33,7 +33,7 @@ jobs:
         run: yarn
 
       - name: Disable Next.js Telemetry
-        run: yarn next telemetry disabled
+        run: yarn next telemetry disable
 
       - name: Build project
         run: yarn build
