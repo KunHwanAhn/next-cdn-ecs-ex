@@ -39,8 +39,7 @@ jobs:
         run: yarn build
 
       - name: Upload built result
-        # if: github.ref == 'refs/heads/main' && matrix.node-version == '18.x'
-        if: matrix.node-version == '18.x'
+        if: github.ref == 'refs/heads/main' && matrix.node-version == '18.x'
         uses: actions/upload-artifact@v3
         with:
           name: next-built-${{ github.sha }}
@@ -51,7 +50,7 @@ jobs:
             public/*
 
   build-docker:
-    # if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     needs: [build-nextjs]
     runs-on: ubuntu-latest
     steps:
@@ -84,6 +83,9 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           mask-password: 'true'
+
+      - name: Sync static files with S3
+        run: aws s3 sync .next/static s3://${{ vars.S3_BUCKET }}/${{ steps.package-version.outputs.current-version}}/.next/static --cache-control max-age=86400,public,immutable
 
       - name: Build and push docker image to Amazon ECR
         env:
