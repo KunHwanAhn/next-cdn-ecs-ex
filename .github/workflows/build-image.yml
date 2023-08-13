@@ -32,22 +32,22 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
+      - name: Disable Next.js Telemetry
+        run: yarn next telemetry disabled
+
       - name: Build project
         run: yarn build
 
-      - name: get-npm-version
-        # if: github.ref == 'refs/heads/main' && matrix.node-version == '18.x'
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
-
       - name: Upload built result
         # if: github.ref == 'refs/heads/main' && matrix.node-version == '18.x'
+        if: matrix.node-version == '18.x'
         uses: actions/upload-artifact@v3
         with:
-          name: next-built-$GITHUB_SHA
+          name: next-built-${{ github.sha }}
           retention-days: 5
           path: |
-            .next/*
+            .next/standalone/*
+            .next/static/*
             public/*
 
   build-docker:
@@ -92,4 +92,5 @@ jobs:
           IMAGE_TAG: ${{ steps.package-version.outputs.current-version}}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker tag $REGISTRY/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:latest
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:latest
