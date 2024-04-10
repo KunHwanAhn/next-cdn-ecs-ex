@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v24.04.1 (2024-04-10)
+**Merged Commits**
+- 빌드 스크립트 오타 수정 (#11)
+
 ## v24.04.0 (2024-04-10)
 **Merged Commits**
 - Next.js + CDN 연동 기능 추가 (#8)
