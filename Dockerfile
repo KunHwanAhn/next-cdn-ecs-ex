@@ -7,11 +7,12 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Copy build output files
+COPY node_modules node_modules
+COPY package.json package.json
 COPY ./public ./public
-COPY ./.next/standalone ./
-COPY ./.next/static ./.next/static
+COPY ./.next ./.next
 
 EXPOSE $PORT
 
 # Running the app
-ENTRYPOINT [ "node", "server.js" ]
+ENTRYPOINT [ "yarn", "start" ]
