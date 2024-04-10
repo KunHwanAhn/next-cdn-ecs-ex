@@ -87,7 +87,7 @@ jobs:
       - name: Sync static files with S3
         env:
           MAX_AGE: ${{ vars.CACHE_CONTROL_MAX_AGE }}
-        run: aws s3 sync .next/static s3://${{ vars.S3_BUCKET }}/${{ steps.package-version.outputs.current-version }}/.next/static --cache-control max-age=$MAX_AGE,public,immutable
+        run: aws s3 sync .next/static s3://${{ vars.S3_BUCKET }}/${{ steps.package-version.outputs.current-version }}/_next/static --cache-control max-age=$MAX_AGE,public,immutable
 
       - name: Build and push docker image to Amazon ECR
         env:
