@@ -9,7 +9,6 @@ WORKDIR /usr/src/app
 # Copy build output files
 COPY ./public ./public
 COPY ./.next/standalone ./
-COPY ./.next/static ./.next/static
 
 EXPOSE $PORT
 
