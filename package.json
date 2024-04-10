@@ -10,6 +10,7 @@
     "dev": "next dev | pino-pretty -t -c",
     "build": "next build",
     "start": "next start | pino-pretty -t -c",
+    "start:standalone": "node .next/standalone/server.js",
     "lint": "next lint"
   },
   "dependencies": {
