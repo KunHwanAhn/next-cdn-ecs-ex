@@ -1,6 +1,6 @@
 {
   "name": "next-cdn-ecs-ex",
-  "version": "23.08.0",
+  "version": "24.04.0",
   "main": "src/pages/index.ts",
   "repository": "git@github.com:KunHwanAhn/next-cdn-ecs-ex.git",
   "author": "Conan Kunhwan Ahn <kunhwon@gmail.com>",
@@ -10,6 +10,7 @@
     "dev": "next dev | pino-pretty -t -c",
     "build": "next build",
     "start": "next start | pino-pretty -t -c",
+    "start:standalone": "node .next/standalone/server.js",
     "lint": "next lint"
   },
   "dependencies": {
