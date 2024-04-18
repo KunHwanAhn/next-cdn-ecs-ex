@@ -44,7 +44,7 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@v1.3.1
 
       - name: Configure AWS credentials
-        if: ${{ !cancelled() }}
+        if: steps.package-version.outcome == 'success'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -52,14 +52,14 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Login to Amazon ECR
-        if: ${{ !cancelled() }}
+        if: steps.package-version.outcome == 'success'
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
           mask-password: 'true'
 
       - name: Build and push docker image to Amazon ECR
-        if: ${{ !cancelled() }}
+        if: steps.package-version.outcome == 'success'
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
