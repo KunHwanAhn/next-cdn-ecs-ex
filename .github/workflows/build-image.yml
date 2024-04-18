@@ -38,40 +38,13 @@ jobs:
       - name: Build project
         run: yarn build
 
-      - name: Upload built result
-        if: github.ref == 'refs/heads/main' && matrix.node-version == '18.x'
-        uses: actions/upload-artifact@v3
-        with:
-          name: next-built-${{ github.sha }}
-          retention-days: 5
-          path: |
-            .next/standalone/*
-            .next/static/*
-            public/*
-
-  build-docker:
-    if: github.ref == 'refs/heads/main'
-    needs: [build-nextjs]
-    runs-on: ubuntu-latest
-    steps:
-      - name: git clone
-        uses: actions/checkout@v3
-
-      - name: Use Node.js 18.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.x
-
       - name: get-npm-version
+        if: github.ref == 'refs/heads/main' && matrix.node-version == '18.x' && success()
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
 
-      - name: Download built result
-        uses: actions/download-artifact@v3
-        with:
-          name: next-built-${{ github.sha }}
-
       - name: Configure AWS credentials
+        if: success()
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -79,15 +52,14 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Login to Amazon ECR
+        if: success()
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
           mask-password: 'true'
 
-      - name: Sync static files with S3
-        run: aws s3 sync .next/static s3://${{ vars.S3_BUCKET }}/${{ steps.package-version.outputs.current-version}}/.next/static --cache-control max-age=86400,public,immutable
-
       - name: Build and push docker image to Amazon ECR
+        if: success()
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
