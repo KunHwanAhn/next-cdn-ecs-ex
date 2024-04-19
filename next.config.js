@@ -1,3 +1,5 @@
+const { version: packageVersion } = require('./package.json');
+
 /** @type {import('next').NextConfig} */
 const defaultConfig = {
   swcMinify: true,
@@ -19,6 +21,7 @@ const devConfig = {
 /** @type {import('next').NextConfig} */
 const prodConfig = {
   ...defaultConfig,
+  assetPrefix: `${process.env.CDN_BASE_URL}/${packageVersion}`,
   compiler: {
     removeConsole: {
       exclude: ['error'],
