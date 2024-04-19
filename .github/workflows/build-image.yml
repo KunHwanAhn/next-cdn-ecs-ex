@@ -58,10 +58,9 @@ jobs:
         run: aws s3 sync .next/static s3://${{ vars.S3_BUCKET }}/${{ steps.package-version.outputs.current-version }}/_next/static --cache-control max-age=$MAX_AGE,public,immutable
 
       - name: Login to Amazon ECR
+        if: steps.package-version.outcome == 'success'
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          mask-password: 'true'
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and push docker image to Amazon ECR
         if: steps.package-version.outcome == 'success'
