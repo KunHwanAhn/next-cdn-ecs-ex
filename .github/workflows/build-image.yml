@@ -39,7 +39,7 @@ jobs:
         run: yarn build
 
       - name: get-npm-version
-        if: github.ref == 'refs/heads/main' && matrix.node-version == '18.x' && success()
+        if: matrix.node-version == '18.x' && success()
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
 
