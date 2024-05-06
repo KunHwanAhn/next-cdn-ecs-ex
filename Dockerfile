@@ -12,6 +12,7 @@ COPY package.json package.json
 COPY public public
 COPY .next .next
 COPY next.config.js next.config.js
+COPY .env.* .
 
 EXPOSE $PORT
 

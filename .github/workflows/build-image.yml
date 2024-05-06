@@ -51,12 +51,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
 
+      - name: Sync static files with S3
+        if: steps.package-version.outcome == 'success'
+        env:
+          MAX_AGE: ${{ vars.CACHE_CONTROL_MAX_AGE }}
+        run: aws s3 sync .next/static s3://${{ vars.S3_BUCKET }}/${{ steps.package-version.outputs.current-version }}/_next/static --cache-control max-age=$MAX_AGE,public,immutable
+
       - name: Login to Amazon ECR
         if: steps.package-version.outcome == 'success'
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          mask-password: 'true'
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and push docker image to Amazon ECR
         if: steps.package-version.outcome == 'success'
