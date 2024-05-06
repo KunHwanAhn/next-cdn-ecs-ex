@@ -1,4 +1,4 @@
-FROM node:18.17.0-alpine3.18
+FROM --platform=linux/amd64 node:18.17.0-alpine3.18
 
 ENV PORT 80
 
