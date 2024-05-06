@@ -39,7 +39,8 @@ jobs:
         run: yarn build
 
       - name: Upload built result
-        if: github.ref == 'refs/heads/main' && matrix.node-version == '18.x'
+        # if: github.ref == 'refs/heads/main' && matrix.node-version == '18.x'
+        if: matrix.node-version == '18.x'
         uses: actions/upload-artifact@v4
         with:
           name: next-built-${{ github.sha }}
@@ -50,7 +51,7 @@ jobs:
             public/*
 
   build-docker:
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
     needs: [build-nextjs]
     runs-on: ubuntu-latest
     steps:
