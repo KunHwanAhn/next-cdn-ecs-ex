@@ -1,0 +1,79 @@
+{
+  "executionRoleArn": "arn:aws:iam::025313978167:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+      {
+          "name": "my-container-name",
+          "image": "<IMAGE_NAME>",
+          "portMappings": [
+              {
+                  "name": "my-container-name-80-tcp",
+                  "containerPort": 80,
+                  "hostPort": 80,
+                  "protocol": "tcp",
+                  "appProtocol": "http"
+              }
+          ],
+          "essential": true,
+          "ulimits": [
+              {
+                  "name": "nofile",
+                  "softLimit": 65535,
+                  "hardLimit": 65535
+              }
+          ],
+          "logConfiguration": {
+              "logDriver": "awslogs",
+              "options": {
+                  "awslogs-create-group": "true",
+                  "awslogs-group": "/ecs/my-new-task",
+                  "awslogs-region": "ap-northeast-2",
+                  "awslogs-stream-prefix": "ecs"
+              }
+          }
+      }
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "requiresAttributes": [
+    {
+        "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+        "name": "ecs.capability.execution-role-awslogs"
+    },
+    {
+        "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+        "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+        "name": "ecs.capability.task-eni"
+    },
+    {
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+    }
+  ],
+  "networkMode": "awsvpc",
+  "family": "my-new-task",
+  "revision": 1,
+  "volumes": [],
+  "placementConstraints": [],
+  "compatibilities": [
+      "EC2",
+      "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+      "cpuArchitecture": "X86_64",
+      "operatingSystemFamily": "LINUX"
+  }
+}

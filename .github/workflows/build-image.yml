@@ -9,11 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [18.x, 20.x]
-
     steps:
       - name: git clone
         uses: actions/checkout@v3
@@ -34,5 +32,40 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
+      - name: Disable Next.js Telemetry
+        run: yarn next telemetry disable
+
       - name: Build project
         run: yarn build
+
+      - name: get-npm-version
+        if: github.ref == 'refs/heads/main' && matrix.node-version == '18.x' && success()
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+
+      - name: Configure AWS credentials
+        if: steps.package-version.outcome == 'success'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        if: steps.package-version.outcome == 'success'
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          mask-password: 'true'
+
+      - name: Build and push docker image to Amazon ECR
+        if: steps.package-version.outcome == 'success'
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ steps.package-version.outputs.current-version }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker tag $REGISTRY/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:latest
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:latest
