@@ -1,4 +1,4 @@
-FROM node:18.17.0-alpine3.18
+FROM --platform=linux/amd64 node:18.17.0-alpine3.18
 
 ENV PORT 80
 
@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 COPY node_modules node_modules
 COPY package.json package.json
 COPY .env.* .
-COPY next.config.js .
+COPY next.config.js next.config.js
 COPY public public
 COPY .next .next
 
