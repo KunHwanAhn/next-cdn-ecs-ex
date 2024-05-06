@@ -1,4 +1,4 @@
-FROM node:18.17.0-alpine3.18
+FROM --platform=linux/amd64 node:18.17.0-alpine3.18
 
 ENV PORT 80
 
@@ -9,8 +9,9 @@ WORKDIR /usr/src/app
 # Copy build output files
 COPY node_modules node_modules
 COPY package.json package.json
-COPY ./public ./public
-COPY ./.next ./.next
+COPY public public
+COPY .next .next
+COPY next.config.js next.config.js
 
 EXPOSE $PORT
 
