@@ -1,6 +1,6 @@
 {
   "name": "next-cdn-ecs-ex",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "main": "src/pages/index.ts",
   "repository": "git@github.com:KunHwanAhn/next-cdn-ecs-ex.git",
   "author": "Conan Kunhwan Ahn <kunhwon@gmail.com>",
