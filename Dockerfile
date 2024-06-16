@@ -9,6 +9,7 @@ WORKDIR /usr/src/app
 # Copy build output files
 COPY ./public ./public
 COPY ./.next/standalone ./
+COPY ./.env.production ./
 
 EXPOSE $PORT
 
